@@ -24,6 +24,8 @@
       "typescript": "^4.3.2"
    },
    "dependencies": {
+      "@types/bcrypt": "^5.0.0",
+      "bcrypt": "^5.0.1",
       "fastify": "^3.24.1",
       "pg": "^8.4.0",
       "reflect-metadata": "^0.1.10",

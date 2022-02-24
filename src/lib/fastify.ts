@@ -1,5 +1,6 @@
 import fastifyFactory from 'fastify'
+import { userRoutes } from './userman'
 
 
-export const fastify = fastifyFactory({ logger: true })
-
+export const fs = fastifyFactory({ logger: true })
+.register(userRoutes, {prefix:"/user"})

@@ -26,11 +26,26 @@ export async function saveSession(reply: FastifyReply, user: User) {
 }
 
 export async function loadSession(request: FastifyRequest) {
-    console.log(request.cookies)
+
     if (!request.cookies["SCOOKIE"]) return
 
 
     const unsigned = request.unsignCookie(request.cookies["SCOOKIE"])
-    console.log(unsigned)
+
     if (unsigned.value && unsigned.valid) request.session = await getRepository(Session).findOne(unsigned.value)
+}
+
+export async function deleteSession(request: FastifyRequest, reply: FastifyReply) {
+    const sessionRep = getRepository(Session)
+
+    if (!request.cookies["SCOOKIE"]) return
+
+    const unsigned = request.unsignCookie(request.cookies["SCOOKIE"])
+    if (unsigned.value && unsigned.valid){
+        const session = await sessionRep.findOne(unsigned.value)
+        await sessionRep.delete(session.id)
+        void reply.clearCookie("SCOOKIE", {
+            path: '/'
+        })
+    }
 }

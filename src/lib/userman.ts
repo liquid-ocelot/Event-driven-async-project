@@ -7,11 +7,11 @@ import { FastifyInstance } from "fastify";
 
 import { getRepository } from "typeorm";
 import { User } from "../entity/User";
-import { UserParams } from "../schemas/types/user.params";
+import { UserParams } from "../schemas/types/user.body";
 
 
-import * as userParamsSchema from "../schemas/json/user.params.json";
-import { loadSession, saveSession } from "./sessionman";
+import * as userParamsSchema from "../schemas/json/user.body.json";
+import { deleteSession, loadSession, saveSession } from "./sessionman";
 
 
 
@@ -85,10 +85,10 @@ export async function userRoutes(fastify: FastifyInstance) {
         fastify.get("/", {
 
             handler: async function resolve(request, reply) {
-                console.log(request.cookies)
+
                 await loadSession(request);
 
-                console.log(request.session)
+
 
                 if(request.session){
                     return reply.code(200).send({username: request.session.user.username, id: request.session.user.id})
@@ -99,7 +99,14 @@ export async function userRoutes(fastify: FastifyInstance) {
             }
 
         }
-        )
+        ),
+        fastify.delete("/logout",{
+            handler: async function logout(request, reply){
+                await deleteSession(request, reply);
+
+                return reply.code(200).send();
+            }
+        })
 }
 
 

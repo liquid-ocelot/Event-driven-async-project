@@ -7,18 +7,18 @@ import { FastifyInstance } from "fastify";
 
 import { getRepository } from "typeorm";
 import { User } from "../entity/User";
-import { UserParams } from "../schemas/types/user.body";
+import { UserBody } from "../schemas/types/user.body";
 
 
-import * as userParamsSchema from "../schemas/json/user.body.json";
+import * as userBodySchema from "../schemas/json/user.body.json";
 import { deleteSession, loadSession, saveSession } from "./sessionman";
 
 
 
 export async function userRoutes(fastify: FastifyInstance) {
-    fastify.post<{ Body: UserParams }>("/", {
+    fastify.post<{ Body: UserBody }>("/", {
         schema: {
-            body: userParamsSchema
+            body: userBodySchema
         },
         handler: async function createUser(request, reply) {
 
@@ -47,9 +47,9 @@ export async function userRoutes(fastify: FastifyInstance) {
 
     }
     ),
-        fastify.post<{ Body: UserParams }>("/login", {
+        fastify.post<{ Body: UserBody }>("/login", {
             schema: {
-                body: userParamsSchema
+                body: userBodySchema
             },
             handler: async function createUser(request, reply) {
 

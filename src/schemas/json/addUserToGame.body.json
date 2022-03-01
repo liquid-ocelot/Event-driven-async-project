@@ -1,0 +1,14 @@
+{
+    "title": "addUserGameBody",
+    "type": "object",
+    "properties":{
+        "idUser":{
+            "type": "number"
+        },
+        "idGame":{
+            "type": "number"
+        }
+    },
+    "additionalProperties": false,
+    "required": ["idUser", "idGame"]
+}

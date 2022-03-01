@@ -1,4 +1,4 @@
-import { FastifyReply, FastifyRequest } from 'fastify'
+import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from 'fastify'
 import cookie, { FastifyCookieOptions } from 'fastify-cookie'
 import { getRepository } from 'typeorm'
 import { Session } from '../entity/session'
@@ -34,6 +34,22 @@ export async function loadSession(request: FastifyRequest) {
 
     if (unsigned.value && unsigned.valid) request.session = await getRepository(Session).findOne(unsigned.value)
 }
+
+export async function checkAuth(request: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction){
+    await loadSession(request);
+    if (request.session) {
+        console.log("test")
+        return 
+    }
+    else{
+        console.log("test2")
+        return reply.code(401).send()
+    }
+    
+    
+}
+
+
 
 export async function deleteSession(request: FastifyRequest, reply: FastifyReply) {
     const sessionRep = getRepository(Session)

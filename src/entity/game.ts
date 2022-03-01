@@ -17,5 +17,5 @@ export class Game {
 
     @ManyToMany(() => User, players => players.games)
     @JoinTable()
-    players: Promise<User[]>
+    players: User[]
 }

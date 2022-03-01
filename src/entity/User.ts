@@ -21,5 +21,5 @@ export class User {
     gameCreated!: Promise<Game[]>
 
     @ManyToMany(() => Game, game => game.players)
-    games: Promise<Game[]>
+    games: Game[]
 }

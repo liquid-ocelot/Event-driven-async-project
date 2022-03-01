@@ -2,6 +2,7 @@ import cookie, { FastifyCookieOptions } from 'fastify-cookie'
 import fastify from 'fastify'
 import { userRoutes } from './userman'
 import { gameRoutes } from './gameman'
+import { loadSession } from "./sessionman";
 
 
 export const fs = fastify({ logger: true })

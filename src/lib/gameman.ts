@@ -1,7 +1,7 @@
 
 import { FastifyInstance } from "fastify";
 
-import { getRepository } from "typeorm";
+import { getRepository, In } from "typeorm";
 
 
 import { CreateGameBody } from "../schemas/types/createGame.body";
@@ -30,6 +30,7 @@ export async function gameRoutes(fastify: FastifyInstance) {
             const game = new Game()
             game.name = request.body.name;
             game.creator = request.session.user
+            game.players = [request.session.user]
 
             const saved_game = await gameRepo.save(game).catch(() => { return reply.code(500).send() })
             return reply.code(201).send({
@@ -50,7 +51,11 @@ export async function gameRoutes(fastify: FastifyInstance) {
         handler: async function getGamesInfo(request, reply) {
             const gameRepo = getRepository(Game);
 
-            const games = await gameRepo.find({ relations:["players"], where:{creator:request.session.user}})
+            // const games = await gameRepo.find({ relations:["players"], where:[{creator:request.session.user}, {players: request.session.user}]})
+            const userRepo = getRepository(User);
+            const user = await userRepo.findOne({relations:["games"], where:{id:request.session.userId}})
+            const idGames = user.games.map(g => g.id)
+            const games = await gameRepo.find({relations:["players"], where:{id:In(idGames)}})
 
             return reply.code(200).send(games)
         }
@@ -68,6 +73,10 @@ export async function gameRoutes(fastify: FastifyInstance) {
 
             const user = await userRepo.findOne({id:request.body.idUser})
             const game = await gameRepo.findOne({id: request.body.idGame}, {relations:["players"]})
+
+            if(game.creatorid !== request.session.userId){
+                return reply.code(403).send()
+            }
 
             if(game.players == undefined){
                 game.players = []

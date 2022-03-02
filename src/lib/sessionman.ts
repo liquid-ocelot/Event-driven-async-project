@@ -38,11 +38,11 @@ export async function loadSession(request: FastifyRequest) {
 export async function checkAuth(request: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction){
     await loadSession(request);
     if (request.session) {
-        console.log("test")
+
         return 
     }
     else{
-        console.log("test2")
+
         return reply.code(401).send()
     }
     

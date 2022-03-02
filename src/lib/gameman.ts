@@ -8,6 +8,7 @@ import { CreateGameBody } from "../schemas/types/createGame.body";
 import * as createGameBodySchema from "../schemas/json/createGame.body.json";
 import { AddUserGameBody } from "../schemas/types/addUserToGame.body";
 import * as addUserGameBodySchema from "../schemas/json/addUserToGame.body.json"
+import * as listGameBodySchema from "../schemas/json/listGame.body.json"
 
 import { checkAuth } from "./sessionman";
 import { Game } from "../entity/game";
@@ -40,7 +41,9 @@ export async function gameRoutes(fastify: FastifyInstance) {
     }),
     fastify.get("/", {
         schema: {
-            
+            response:{
+                200:listGameBodySchema
+            }
         },
         preHandler: checkAuth
         ,

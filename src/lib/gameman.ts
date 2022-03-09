@@ -10,9 +10,17 @@ import { AddUserGameBody } from "../schemas/types/addUserToGame.body";
 import * as addUserGameBodySchema from "../schemas/json/addUserToGame.body.json"
 import * as listGameBodySchema from "../schemas/json/listGame.body.json"
 
+import { GeneratorInputBody } from "../schemas/types/generatorInput.body";
+import * as generatorInputBodySchema from "../schemas/json/generatorInput.body.json"
+
+import { ParamId } from "../schemas/types/param.id";
+import * as paramIdSchema from "../schemas/json/param.id.json"
+
+
 import { checkAuth } from "./sessionman";
 import { Game } from "../entity/game";
-import { User } from "../entity/User";
+import { User } from "../entity/user";
+import { generateMap } from "./generator";
 
 
 
@@ -31,6 +39,7 @@ export async function gameRoutes(fastify: FastifyInstance) {
             game.name = request.body.name;
             game.creator = request.session.user
             game.players = [request.session.user]
+            game.map = "";
 
             const saved_game = await gameRepo.save(game).catch(() => { return reply.code(500).send() })
             return reply.code(201).send({
@@ -49,6 +58,7 @@ export async function gameRoutes(fastify: FastifyInstance) {
         preHandler: checkAuth
         ,
         handler: async function getGamesInfo(request, reply) {
+
             const gameRepo = getRepository(Game);
 
             // const games = await gameRepo.find({ relations:["players"], where:[{creator:request.session.user}, {players: request.session.user}]})
@@ -56,6 +66,7 @@ export async function gameRoutes(fastify: FastifyInstance) {
             const user = await userRepo.findOne({relations:["games"], where:{id:request.session.userId}})
             const idGames = user.games.map(g => g.id)
             const games = await gameRepo.find({relations:["players"], where:{id:In(idGames)}})
+            
 
             return reply.code(200).send(games)
         }
@@ -87,6 +98,54 @@ export async function gameRoutes(fastify: FastifyInstance) {
             await gameRepo.save(game)
 
             return reply.code(200).send()
+        }
+
+    }),
+    fastify.post<{Body: GeneratorInputBody}>("/createMap", {
+        schema: {
+            body:generatorInputBodySchema
+        },
+        preHandler: checkAuth,
+        
+        handler: async function createMap(request, reply) {
+
+            const gameRepo = getRepository(Game);
+            const game = await gameRepo.findOne({id: request.body.gameId});
+
+            if(game.creatorid !== request.session.userId){
+                return reply.code(401).send()
+            }
+
+            const map = generateMap(
+                request.body.height,
+                request.body.width,
+                request.body.seed,
+                request.body.noSeed,
+                request.body.perThousand,
+            );
+
+            game.map = map;
+
+            await gameRepo.save(game)
+
+            return reply.code(200).send({"map": map})
+        }
+
+    }),
+    fastify.get<{Params: ParamId}>("/map/:id", {
+        schema: {
+            params:paramIdSchema
+        },
+        preHandler: checkAuth,
+        
+        handler: async function readMap(request, reply) {
+
+            const gameRepo = getRepository(Game);
+            const game = await gameRepo.findOne({id: request.params.id});
+
+
+
+            return reply.code(200).send({"map": game.map})
         }
 
     })

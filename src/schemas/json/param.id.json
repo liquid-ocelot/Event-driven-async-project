@@ -1,0 +1,9 @@
+{
+    "title": "paramId",
+    "type": "object",
+    "properties": {
+      "id": { "type": "number" }
+    },
+    "additionalProperties": false,
+    "required": ["id"]
+  }

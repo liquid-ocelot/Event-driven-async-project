@@ -11,6 +11,18 @@
       "outDir": "./build",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
-      "sourceMap": true
-   }
+      "sourceMap": true,
+      "allowJs": true,
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "forceConsistentCasingInFileNames": true
+   },
+   "include": [
+      "src/**/*",
+      "desc.d.ts"
+      
+   ],
+   "paths": {
+      "CppGenerator": ["./CppGenerator.node"]
+    }
 }

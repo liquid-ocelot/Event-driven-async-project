@@ -6,7 +6,7 @@ import * as bcrypt from "bcrypt"
 import { FastifyInstance } from "fastify";
 
 import { getRepository } from "typeorm";
-import { User } from "../entity/User";
+import { User } from "../entity/user";
 import { UserBody } from "../schemas/types/user.body";
 
 

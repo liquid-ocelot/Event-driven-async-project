@@ -15,6 +15,7 @@ import { deleteSession, loadSession, saveSession } from "./sessionman";
 
 
 
+
 export async function userRoutes(fastify: FastifyInstance) {
     fastify.post<{ Body: UserBody }>("/", {
         schema: {
@@ -35,13 +36,13 @@ export async function userRoutes(fastify: FastifyInstance) {
 
             }
 
-            bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(request.body.password, salt, async (err, hash) => {
-                    user.password = hash;
-                    await userRepo.save(user);
-                })
-            })
-            return reply.code(201).send();
+            const salt = await bcrypt.genSalt(10)
+            const hash = await bcrypt.hash(request.body.password, salt)
+            user.password = hash;
+            await userRepo.save(user)
+            return reply.code(201).send()
+
+            
 
         }
 
@@ -56,24 +57,17 @@ export async function userRoutes(fastify: FastifyInstance) {
 
                 const userRepo = getRepository(User);
 
-                // const user = new User();
-                // user.username = request.body.username;
-
                 const user = await userRepo.findOne({ username: request.body.username });
 
                 if (user) {
-                    await bcrypt.compare(request.body.password, user.password).then(async (result) => {
-                        if (result) {
-                            await saveSession(reply, user)
-                            return reply.code(200).send();
-                        } else {
-                            return reply.code(401).send();
-                        }
+                    const result = await bcrypt.compare(request.body.password, user.password)
+                    if (result) {
+                        await saveSession(reply, user)
+                        return reply.code(200).send();
+                    } else {
+                        return reply.code(401).send();
                     }
-
-                    );
-
-
+                
                 } else {
                     return reply.code(404).send()
                 }
@@ -106,7 +100,26 @@ export async function userRoutes(fastify: FastifyInstance) {
 
                 return reply.code(200).send();
             }
-        })
+        }),
+        fastify.post<{ Body: UserBody }>("/test", {
+            schema: {
+                body: userBodySchema
+            },
+            handler: async function test(request, reply) {
+    
+                
+
+                return reply.code(201).send({
+                    "username": request.body.username,
+                    "pwd": request.body.password,
+                    "header": request.headers
+
+                });
+    
+            }
+    
+        }
+        )
 }
 
 

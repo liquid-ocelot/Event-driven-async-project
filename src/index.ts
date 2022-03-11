@@ -1,6 +1,9 @@
 import {createConnection} from "typeorm";
 import "reflect-metadata";
 import { fs } from "./lib/fastify";
+import { Game } from "./entity/game";
+import { Session } from "./entity/session";
+import { User } from "./entity/user";
 // import {createConnection} from "typeorm";
 // import {User} from "./entity/User";
 

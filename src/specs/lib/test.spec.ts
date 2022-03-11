@@ -1,4 +1,4 @@
-import { Connection, createConnection } from "typeorm";
+import { Connection, createConnection, getRepository } from "typeorm";
 import { Game } from "../../entity/game";
 import { Session } from "../../entity/session";
 import { User } from "../../entity/user";
@@ -66,6 +66,11 @@ export class TestUtil {
     async reloadFixtures() {
         await this.dbConn.synchronize()
         await this.cleanAll();
+        const user = new User()
+        user.username = "TestMan"
+        user.password = "$2b$10$Cj1LsPQ2DW2HLo7gsRxcSObPtH3ofOvCkLSMQxdRFIYzf7.DUUA4O"
+        const userRepo = getRepository(User);
+        await userRepo.save(user)
     }
 
     /**

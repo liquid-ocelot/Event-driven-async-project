@@ -2,6 +2,7 @@ import { Connection, createConnection, getRepository } from "typeorm";
 import { Game } from "../../entity/game";
 import { Session } from "../../entity/session";
 import { User } from "../../entity/user";
+import { DATABASE_HOST, DATABASE_PASS, DATABASE_PORT, DATABASE_SYNC, DATABASE_USER } from "../../lib/dotenv";
 
 
 
@@ -29,12 +30,12 @@ export class TestUtil {
     async openDbConnection() {
         this.dbConn = await createConnection({
             type: "postgres",
-            host: "localhost",
-            port: 5432,
-            username: "postgres",
-            password: "admin",
+            host: DATABASE_HOST,
+            port: DATABASE_PORT,
+            username: DATABASE_USER,
+            password: DATABASE_PASS,
             database: "pgtest",
-            synchronize: true,
+            synchronize: DATABASE_SYNC,
             entities: [
                 Session, User, Game
             ],

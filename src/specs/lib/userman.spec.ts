@@ -1,6 +1,7 @@
 
 import { fs } from "../../lib/fastify";
 import { expect } from "chai";
+import { COOKIE_NAME } from "../../lib/dotenv";
 
 
 describe("user route", function () {
@@ -58,13 +59,13 @@ describe("user route", function () {
                 payload: { username: "TestMan", password: "test" }
             })
 
-            const session_cookie = connect_request.cookies.find((cookie:{name:string}) => cookie.name === "SCOOKIE") as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
+            const session_cookie = connect_request.cookies.find((cookie:{name:string}) => cookie.name === COOKIE_NAME) as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
 
 
             const response = await fs.inject({
                 method: "GET",
                 url: '/user',
-                cookies:{["SCOOKIE"]: session_cookie.value}
+                cookies:{[COOKIE_NAME]: session_cookie.value}
             })
             expect(response.statusCode).to.equal(200)
             
@@ -85,7 +86,7 @@ describe("user route", function () {
     
             expect(response.statusCode).to.equal(200)
             const cookies = response.cookies.map((cookie:{name:string}) => cookie.name)
-            expect(cookies).to.contain("SCOOKIE")
+            expect(cookies).to.contain(COOKIE_NAME)
             
         })
 
@@ -118,12 +119,12 @@ describe("user route", function () {
                 
             })
     
-            const session_cookie = connect_req.cookies.find((cookie:{name:string}) => cookie.name === "SCOOKIE") as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
+            const session_cookie = connect_req.cookies.find((cookie:{name:string}) => cookie.name === COOKIE_NAME) as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
 
             const response = await fs.inject({
                 method: "DELETE",
                 url: '/user/logout',
-                cookies:{["SCOOKIE"]: session_cookie.value}
+                cookies:{[COOKIE_NAME]: session_cookie.value}
                 
             })
 

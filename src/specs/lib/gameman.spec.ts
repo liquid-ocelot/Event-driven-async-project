@@ -1,6 +1,7 @@
 import { fs } from "../../lib/fastify";
 import { expect } from "chai";
 import { Game } from "../../entity/game";
+import { COOKIE_NAME } from "../../lib/dotenv";
 
 
 describe("game route", function () {
@@ -25,13 +26,13 @@ describe("game route", function () {
                 payload: { username: "TestMan", password: "test" }
             })
 
-            const session_cookie = connect_request.cookies.find((cookie:{name:string}) => cookie.name === "SCOOKIE") as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
+            const session_cookie = connect_request.cookies.find((cookie:{name:string}) => cookie.name === COOKIE_NAME) as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
 
             const response = await fs.inject({
                 method: "POST",
                 url: '/game',
                 payload: { "name": "horizon" },
-                cookies: { ["SCOOKIE"]: session_cookie.value }
+                cookies: { [COOKIE_NAME]: session_cookie.value }
             })
 
             expect(response.statusCode).to.equal(201)
@@ -46,12 +47,12 @@ describe("game route", function () {
                 payload: { username: "TestMan", password: "test" }
             })
 
-            const session_cookie = connect_request.cookies.find((cookie:{name:string}) => cookie.name === "SCOOKIE") as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
+            const session_cookie = connect_request.cookies.find((cookie:{name:string}) => cookie.name === COOKIE_NAME) as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
 
             const response = await fs.inject({
                 method: "GET",
                 url: '/game',
-                cookies: { ["SCOOKIE"]: session_cookie.value }
+                cookies: { [COOKIE_NAME]: session_cookie.value }
             })
 
             expect(response.statusCode).to.equal(200)
@@ -72,14 +73,14 @@ describe("game route", function () {
                 payload: { username: "TestMan2", password: "test" }
             })
 
-            const session_cookie = connect_request.cookies.find((cookie:{name:string}) => cookie.name === "SCOOKIE") as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
+            const session_cookie = connect_request.cookies.find((cookie:{name:string}) => cookie.name === COOKIE_NAME) as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
 
 
             const response = await fs.inject({
                 method: "POST",
                 url: '/game/addUser',
                 payload: { idUser: 2, idGame: 1 },
-                cookies: { ["SCOOKIE"]: session_cookie.value }
+                cookies: { [COOKIE_NAME]: session_cookie.value }
             })
 
             expect(response.statusCode).to.equal(403)
@@ -95,14 +96,14 @@ describe("game route", function () {
                 payload: { username: "TestMan", password: "test" }
             })
 
-            const session_cookie = connect_request.cookies.find((cookie:{name:string}) => cookie.name === "SCOOKIE") as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
+            const session_cookie = connect_request.cookies.find((cookie:{name:string}) => cookie.name === COOKIE_NAME) as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
 
 
             const response = await fs.inject({
                 method: "POST",
                 url: '/game/addUser',
                 payload: { idUser: 2, idGame: 1 },
-                cookies: { ["SCOOKIE"]: session_cookie.value }
+                cookies: { [COOKIE_NAME]: session_cookie.value }
             })
 
             expect(response.statusCode).to.equal(200)
@@ -121,7 +122,7 @@ describe("game route", function () {
                 payload: { username: "TestMan", password: "test" }
             })
 
-            const session_cookie = connect_request.cookies.find((cookie:{name:string}) => cookie.name === "SCOOKIE") as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
+            const session_cookie = connect_request.cookies.find((cookie:{name:string}) => cookie.name === COOKIE_NAME) as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
 
             const response = await fs.inject({
                 method: "POST",
@@ -132,7 +133,7 @@ describe("game route", function () {
                 seed:12345,
                 noSeed: false,
                 perThousand:16},
-                cookies: { ["SCOOKIE"]: session_cookie.value }
+                cookies: { [COOKIE_NAME]: session_cookie.value }
             })
 
             const expected_map = "10;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;0;0;0;0;0;0;0;0;0;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0"
@@ -155,12 +156,12 @@ describe("game route", function () {
                 payload: { username: "TestMan", password: "test" }
             })
 
-            const session_cookie = connect_request.cookies.find((cookie:{name:string}) => cookie.name === "SCOOKIE") as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
+            const session_cookie = connect_request.cookies.find((cookie:{name:string}) => cookie.name === COOKIE_NAME) as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
 
             const response = await fs.inject({
                 method: "GET",
                 url: '/game/map/1',
-                cookies: { ["SCOOKIE"]: session_cookie.value }
+                cookies: { [COOKIE_NAME]: session_cookie.value }
             })
 
             expect(response.statusCode).to.equal(200)

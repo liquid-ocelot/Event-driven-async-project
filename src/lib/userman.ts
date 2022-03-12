@@ -100,26 +100,7 @@ export async function userRoutes(fastify: FastifyInstance) {
 
                 return reply.code(200).send();
             }
-        }),
-        fastify.post<{ Body: UserBody }>("/test", {
-            schema: {
-                body: userBodySchema
-            },
-            handler: async function test(request, reply) {
-    
-                
-
-                return reply.code(201).send({
-                    "username": request.body.username,
-                    "pwd": request.body.password,
-                    "header": request.headers
-
-                });
-    
-            }
-    
-        }
-        )
+        })
 }
 
 

@@ -107,7 +107,32 @@ describe("user route", function () {
 
     
 
+    describe("/user/logout", function(){
+        it("should disconnect a user", async function () {
 
+    
+            const connect_req = await fs.inject({
+                method: "POST",
+                url: '/user/login',
+                payload: { username: "TestMan", password: "test" },
+                
+            })
+    
+            const session_cookie = connect_req.cookies.find((cookie:{name:string}) => cookie.name === "SCOOKIE") as {name:string, value: string, maxAge: number, path: string, httpOnly: boolean}
+
+            const response = await fs.inject({
+                method: "DELETE",
+                url: '/user/logout',
+                cookies:{["SCOOKIE"]: session_cookie.value}
+                
+            })
+
+
+            expect(response.statusCode).to.equal(200)
+            
+        })
+
+    })
    
 
 })

@@ -66,12 +66,37 @@ export class TestUtil {
     async reloadFixtures() {
         await this.dbConn.synchronize()
         await this.cleanAll();
-        const user = new User()
+        let user = new User()
         user.username = "TestMan"
         user.password = "$2b$10$Cj1LsPQ2DW2HLo7gsRxcSObPtH3ofOvCkLSMQxdRFIYzf7.DUUA4O"
         const userRepo = getRepository(User);
-        await userRepo.save(user)
+        user = await userRepo.save(user)
+
+        const user2 = new User()
+        user2.username = "TestMan2"
+        user2.password = "$2b$10$Cj1LsPQ2DW2HLo7gsRxcSObPtH3ofOvCkLSMQxdRFIYzf7.DUUA4O"
+        await userRepo.save(user2)
+
+
+        const gameRepo = getRepository(Game);
+
+        const game = new Game()
+        game.name = "testGame";
+        game.creator = user
+        game.players = [user]
+        game.map = "";
+
+        await gameRepo.save(game)
+
+        const game2 = new Game()
+        game2.name = "testGame";
+        game2.creator = user
+        game2.players = [user]
+        game2.map = JSON.stringify("10;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;0;0;0;0;0;0;0;0;0;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0");
+
+        await gameRepo.save(game2)
     }
+    
 
     /**
      * Cleans all the entities
@@ -88,13 +113,13 @@ export class TestUtil {
 }
 
 
-const testUtil = new TestUtil() 
+const testUtil = new TestUtil()
 
-before(async function(){
+before(async function () {
     await testUtil.openDbConnection()
     await testUtil.reloadFixtures()
 })
 
-after(async function(){
+after(async function () {
     await testUtil.closeDbConnection()
 })

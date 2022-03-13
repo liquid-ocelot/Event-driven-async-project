@@ -59,8 +59,8 @@ export async function deleteSession(request: FastifyRequest, reply: FastifyReply
 
     const unsigned = request.unsignCookie(request.cookies[COOKIE_NAME])
     if (unsigned.value && unsigned.valid){
-        const session = await sessionRep.findOne(unsigned.value)
-        await sessionRep.delete(session.id)
+        const session = await sessionRep.findOne(unsigned.value).catch(() => { return reply.code(500).send() })
+        await sessionRep.delete(session.id).catch(() => { return reply.code(500).send() })
         void reply.clearCookie(COOKIE_NAME, {
             path: '/'
         })

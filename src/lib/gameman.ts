@@ -42,6 +42,7 @@ export async function gameRoutes(fastify: FastifyInstance) {
             game.map = "";
 
             const saved_game = await gameRepo.save(game).catch(() => { return reply.code(500).send() })
+            fastify.log.info(`Game ${saved_game.id} : ${saved_game.name} created`)
             return reply.code(201).send({
                 id: saved_game.id,
                 name: saved_game.name
@@ -61,11 +62,10 @@ export async function gameRoutes(fastify: FastifyInstance) {
 
             const gameRepo = getRepository(Game);
 
-            // const games = await gameRepo.find({ relations:["players"], where:[{creator:request.session.user}, {players: request.session.user}]})
             const userRepo = getRepository(User);
-            const user = await userRepo.findOne({relations:["games"], where:{id:request.session.userId}})
+            const user = await userRepo.findOne({relations:["games"], where:{id:request.session.userId}}).catch(() => { return reply.code(500).send() })
             const idGames = user.games.map(g => g.id)
-            const games = await gameRepo.find({relations:["players"], where:{id:In(idGames)}})
+            const games = await gameRepo.find({relations:["players"], where:{id:In(idGames)}}).catch(() => { return reply.code(500).send() })
             
 
             return reply.code(200).send(games)
@@ -82,8 +82,8 @@ export async function gameRoutes(fastify: FastifyInstance) {
             const gameRepo = getRepository(Game);
             const userRepo = getRepository(User)
 
-            const user = await userRepo.findOne({id:request.body.idUser})
-            const game = await gameRepo.findOne({id: request.body.idGame}, {relations:["players"]})
+            const user = await userRepo.findOne({id:request.body.idUser}).catch(() => { return reply.code(500).send() })
+            const game = await gameRepo.findOne({id: request.body.idGame}, {relations:["players"]}).catch(() => { return reply.code(500).send() })
 
             if(game.creatorid !== request.session.userId){
                 return reply.code(403).send()
@@ -110,7 +110,7 @@ export async function gameRoutes(fastify: FastifyInstance) {
         handler: async function createMap(request, reply) {
 
             const gameRepo = getRepository(Game);
-            const game = await gameRepo.findOne({id: request.body.gameId});
+            const game = await gameRepo.findOne({id: request.body.gameId}).catch(() => { return reply.code(500).send() });
 
             if(game.creatorid !== request.session.userId){
                 return reply.code(401).send()
@@ -126,7 +126,7 @@ export async function gameRoutes(fastify: FastifyInstance) {
 
             game.map = map;
 
-            await gameRepo.save(game)
+            await gameRepo.save(game).catch(() => { return reply.code(500).send() })
 
             return reply.code(200).send({"map": map})
         }
@@ -141,7 +141,7 @@ export async function gameRoutes(fastify: FastifyInstance) {
         handler: async function readMap(request, reply) {
 
             const gameRepo = getRepository(Game);
-            const game = await gameRepo.findOne({id: request.params.id});
+            const game = await gameRepo.findOne({id: request.params.id}).catch(() => { return reply.code(500).send() });
 
 
 

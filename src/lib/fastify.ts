@@ -3,12 +3,12 @@ import fastify from "fastify";
 import { userRoutes } from "./userman";
 import { gameRoutes } from "./gameman";
 import swagger from "fastify-swagger";
-import { COOKIE_SECRET, FASTIFY_LOGGING } from "./dotenv";
+import { COOKIE_SECRET, FASTIFY_LOGGING, FASTIFY_LOGGING_PATH } from "./dotenv";
 import * as pino from "pino";
 import * as ppretty from "pino-pretty";
 
 const pretty_dest = ppretty.default({
-	destination:"./server.log",
+	destination:FASTIFY_LOGGING_PATH,
 	colorize:false,
 	translateTime:"yyyy-mm-dd HH:MM:ss.l o",
 	singleLine:true

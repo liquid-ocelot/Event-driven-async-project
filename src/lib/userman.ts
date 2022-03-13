@@ -25,14 +25,15 @@ export async function userRoutes(fastify: FastifyInstance) {
 			const user = new User();
 			user.username = request.body.username;
 
-			if (await userRepo.findOne({ username: user.username })) {
+			if (await userRepo.findOne({ username: user.username }).catch(() => { return reply.code(500).send() })) {
 				return reply.code(409).send();
 			}
 
-			const salt = await bcrypt.genSalt(10);
-			const hash = await bcrypt.hash(request.body.password, salt);
+			const salt = await bcrypt.genSalt(10).catch(() => { return reply.code(500).send() });
+			const hash = await bcrypt.hash(request.body.password, salt).catch(() => { return reply.code(500).send() });
 			user.password = hash;
-			await userRepo.save(user);
+			await userRepo.save(user).catch(() => { return reply.code(500).send() });
+			fastify.log.info(`User ${user.username} created`)
 			return reply.code(201).send();
 		},
 	}),
@@ -43,12 +44,13 @@ export async function userRoutes(fastify: FastifyInstance) {
 			handler: async function createUser(request, reply) {
 				const userRepo = getRepository(User);
 
-				const user = await userRepo.findOne({ username: request.body.username });
+				const user = await userRepo.findOne({ username: request.body.username }).catch(() => { return reply.code(500).send() });
 
 				if (user) {
 					const result = await bcrypt.compare(request.body.password, user.password);
 					if (result) {
-						await saveSession(reply, user);
+						await saveSession(reply, user).catch(() => { return reply.code(500).send() });
+						fastify.log.info(`User ${user.username} connected`)
 						return reply.code(200).send();
 					} else {
 						return reply.code(401).send();
@@ -60,7 +62,7 @@ export async function userRoutes(fastify: FastifyInstance) {
 		}),
 		fastify.get("/", {
 			handler: async function resolve(request, reply) {
-				await loadSession(request);
+				await loadSession(request).catch(() => { return reply.code(500).send() });
 
 				if (request.session) {
 					return reply.code(200).send({ username: request.session.user.username, id: request.session.user.id });
@@ -71,8 +73,8 @@ export async function userRoutes(fastify: FastifyInstance) {
 		}),
 		fastify.delete("/logout", {
 			handler: async function logout(request, reply) {
-				await deleteSession(request, reply);
-
+				await deleteSession(request, reply).catch(() => { return reply.code(500).send() });
+				
 				return reply.code(200).send();
 			},
 		});

@@ -63,9 +63,11 @@ In your explanation, please provide links (file + line) to relevant parts of you
 
   > Also check this if you do not store any password or such data (and say it here).
 
-- [ ] Store your configuration entries in environment variables or outside the git scope. **[1 point]** 🔵
+- [x] Store your configuration entries in environment variables or outside the git scope. **[1 point]** 🔵
 
   > How did you achieve this?
+
+  creating an .env file, that will not be commited nor pushed by git
 
 - [ ] Do you provide a way to list every configuration entries (setup instructions, documentation, requireness... are appreciated)? **[1 point]**
 

@@ -1,5 +1,14 @@
 # Event-driven-async-project
 
+
+
+# C++ Generator
+
+The dungeon generator was made using C++ standard library only.
+
+It was then compiled to a nodeJS native plugin using node-addon-api and node-gyp.
+
+
 # SETUP
 
 For this application you will need a postgresql database.
@@ -128,6 +137,7 @@ In your explanation, please provide links (file + line) to relevant parts of you
   > How did you achieve this?
 
   When starting the application, we load the environment variables into variables and use the following function
+  https://github.com/liquid-ocelot/Event-driven-async-project/blob/d1759fb847958003b37bda42f2561066c09253da/src/lib/dotenv.ts
   ```ts
   function getOrThrow(name: string) {
     const val = process.env[name]
@@ -212,7 +222,7 @@ to tell the user about missing variable
   > How did you achieve this?
 
   We set a custom error handler that will truncate the message in case of an error 500
-
+https://github.com/liquid-ocelot/Event-driven-async-project/blob/d1759fb847958003b37bda42f2561066c09253da/src/lib/fastify.ts
   ```ts
   .setErrorHandler(function defaultErrorHandler(error, request, reply) {
 		if (reply.statusCode < 500) {
@@ -235,7 +245,7 @@ to tell the user about missing variable
   > How did you achieve this?
 
   Fastify includes pino as a logger but it seems not entirely (some types definitions are missing, and fastify devs don't want to redo all the work of pino), so installing pino gives access to all the type definition.
-
+https://github.com/liquid-ocelot/Event-driven-async-project/blob/d1759fb847958003b37bda42f2561066c09253da/src/lib/fastify.ts
   ```ts
   const logger = pino.pino({
 	enabled: FASTIFY_LOGGING,
@@ -263,6 +273,7 @@ to tell the user about missing variable
   > Ex: I used `await fs.readFile` in file `folder/xxx.ts:120` instead of `fs.readFileSync`.
 
   In userman.ts, the bcrypt function exists in sync and async, we used the async one.
+  https://github.com/liquid-ocelot/Event-driven-async-project/blob/d1759fb847958003b37bda42f2561066c09253da/src/lib/userman.ts
 
 - [x] No unhandled promise rejections, no uncaught exceptions… **[1 point]** 🔵
   > For example, how do you ensure every promise rejection is caught and properly handled?
@@ -285,9 +296,12 @@ to tell the user about missing variable
 
   > Please provide a link to the more complete summary you have.
 
+  https://github.com/liquid-ocelot/Event-driven-async-project/tree/develop/coverage
+
 - [x] Your test code coverage is 75% or more. **[1 point]** 🔵
 
   > Please provide a link to the `istanbul` HTML coverage summary (or from a similar tool).
+  https://github.com/liquid-ocelot/Event-driven-async-project/tree/develop/coverage
 
 - [ ] Do you run the test on a CD/CI, such as Github Action? **[1 point]**
   > Please provide a link to the latest test summary you have, hosted on Github Action or similar.

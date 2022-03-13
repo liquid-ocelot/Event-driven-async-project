@@ -27,7 +27,7 @@ export const COOKIE_SECURE = process.env.COOKIE_SECURE === 'true'
 export const COOKIE_MAX_AGE = parseInt(getOrThrow('COOKIE_MAX_AGE'), 10)
 
 
-
+//https://github.com/TruffeCendree/student-peer-review/blob/9842e1c412999212a43a48420fc5ef41efefde31/src/lib/dotenv.ts#L40
 function getOrThrow(name: string) {
     const val = process.env[name]
     if (typeof val === 'undefined') throw new Error(`Missing mandatory environment variable ${name}`)

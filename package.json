@@ -8,7 +8,7 @@
       "lint": "eslint --fix src",
       "test": "SET NODE_ENV=test&& mocha --recursive build/specs",
       "test-istanbul": "SET NODE_ENV=test&& nyc mocha --recursive build/specs",
-      "test-istanbul-html": "SET NODE_ENV=test&& nyc --reporter=html mocha --recursive build/specs",
+      "test-istanbul-html": "SET NODE_ENV=test&& nyc --reporter=html --reporter=text mocha --recursive build/specs",
       "compile-schemas": "rm src/schemas/types/*; cd src/schemas/json && json2ts -i . -o ../types",
       "start": "ts-node src/index.ts",
       "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"

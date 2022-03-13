@@ -14,6 +14,7 @@ declare module 'fastify' {
     }
 }
 
+//https://github.com/TruffeCendree/student-peer-review/blob/9842e1c412999212a43a48420fc5ef41efefde31/src/lib/session.ts#L15
 export async function saveSession(reply: FastifyReply, user: User) {
     const id = (await promisify(randomBytes)(64)).toString('base64')
     await getRepository(Session).save({ id, user })

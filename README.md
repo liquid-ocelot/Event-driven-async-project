@@ -235,13 +235,13 @@ to tell the user about missing variable
   > How did you achieve this?
 
   Fastify includes pino as a logger but it seems not entirely (some types definitions are missing, and fastify devs don't want to redo all the work of pino), so installing pino gives access to all the type definition.
+
   ```ts
   const logger = pino.pino({
 	enabled: FASTIFY_LOGGING,
 	level:"info",
-	redact:['req.headers.authorization', 'req.body.password']
-}, pretty_dest)
-  ``` 
+	redact:['req.headers.authorization', 'req.body.password']}, pretty_dest)
+  ```
 
   one of the interesting option is 'redact', it allows to remove sensitive data from the logs.
 

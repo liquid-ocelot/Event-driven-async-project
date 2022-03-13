@@ -225,7 +225,7 @@ to tell the user about missing variable
 
   > You must link your documentation for review (a Github page, a ZIP archive, an attachment to the release notes...).
 
-  https://github.com/liquid-ocelot/Event-driven-async-project/blob/develop/test.zip
+  https://github.com/liquid-ocelot/Event-driven-async-project/blob/develop/swagger-external-ui.zip
 
 - [ ] In addition to requireness and types, do you provide a comment for every property of your documentation? **[1 point]**
 

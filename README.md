@@ -201,6 +201,27 @@ to tell the user about missing variable
   > How did you achieve this?
 
   installing fastify-swagger, then registering swagger as a route.
+    ```ts
+  .register(swagger, {
+  routePrefix: "/swagger",
+  	swagger: {
+  		info: {
+  			title: "Map Generator API",
+  			description: "fuck if i know",
+  			version: "0.0.0.0.1",
+  		},
+  		externalDocs: {
+  			url: "https://swagger.io",
+  			description: "Find more info here",
+  		},
+  		host: "localhost:8087",
+  		schemes: ["http"],
+  		consumes: ["application/json"],
+  		produces: ["application/json"],
+  	},
+  	exposeRoute: true,
+  })
+  ```
 
   > You must link your documentation for review (a Github page, a ZIP archive, an attachment to the release notes...).
 

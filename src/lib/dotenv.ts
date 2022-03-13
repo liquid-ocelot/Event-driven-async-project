@@ -5,6 +5,8 @@ config()
 
 export const FASTIFY_PORT = parseInt(process.env.FASTIFY_PORT || '8080', 10)
 export const FASTIFY_LOGGING = process.env.FASTIFY_LOGGING === 'true'
+export const FASTIFY_LOGGING_COLORIZE = process.env.FASTIFY_LOGGING_COLORIZE === 'true'
+export const FASTIFY_LOGGING_SINGLE_LINE = process.env.FASTIFY_LOGGING_SINGLE_LINE === 'true'
 
 
 

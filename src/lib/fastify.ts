@@ -4,14 +4,31 @@ import { userRoutes } from "./userman";
 import { gameRoutes } from "./gameman";
 import swagger from "fastify-swagger";
 import { COOKIE_SECRET, FASTIFY_LOGGING } from "./dotenv";
+import * as pino from "pino";
+import * as ppretty from "pino-pretty";
 
-export const fs = fastify({ logger: FASTIFY_LOGGING })
+const pretty_dest = ppretty.default({
+	destination:"./server.log",
+	colorize:false,
+	translateTime:"yyyy-mm-dd HH:MM:ss.l o",
+	singleLine:true
+})
+
+
+
+const logger = pino.pino({
+	enabled: FASTIFY_LOGGING,
+	level:"info",
+	redact:['req.headers.authorization', 'req.body.password']
+}, pretty_dest)
+
+export const fs = fastify({ logger: logger })
 	.register(swagger, {
 		routePrefix: "/swagger",
 		swagger: {
 			info: {
 				title: "Map Generator API",
-				description: "fuck if i know",
+				description: "Event driven async project",
 				version: "0.0.0.0.1",
 			},
 			externalDocs: {

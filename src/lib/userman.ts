@@ -18,6 +18,8 @@ export async function userRoutes(fastify: FastifyInstance) {
 			body: userBodySchema,
 		},
 		handler: async function createUser(request, reply) {
+
+
 			const userRepo = getRepository(User);
 
 			const user = new User();

@@ -5,7 +5,15 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface UserBody {
+export type ListGameBody = Game[];
+
+export interface Game {
+  id: number;
+  name: string;
+  players: User[];
+  creator: User;
+}
+export interface User {
+  id: number;
   username: string;
-  password: string;
 }

@@ -1,5 +1,5 @@
 {
-    "title": "UserParams",
+    "title": "UserBody",
     "type": "object",
     "properties":{
         "username":{

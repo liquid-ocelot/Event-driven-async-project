@@ -1,0 +1,26 @@
+{
+    "title": "GeneratorInputBody",
+    "type": "object",
+    "properties":{
+        "gameId":{
+            "type":"number"
+        },
+        "height":{
+            "type": "number"
+        },
+        "width":{
+            "type": "number"
+        },
+        "seed":{
+            "type": "number"
+        },
+        "noSeed":{
+            "type": "boolean"
+        },
+        "perThousand":{
+            "type": "number"
+        }
+    },
+    "additionalProperties": false,
+    "required": ["height", "width", "seed", "noSeed", "perThousand", "gameId"]
+}

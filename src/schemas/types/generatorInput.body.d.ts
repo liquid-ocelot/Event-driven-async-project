@@ -5,7 +5,11 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface UserBody {
-  username: string;
-  password: string;
+export interface GeneratorInputBody {
+  gameId: number;
+  height: number;
+  width: number;
+  seed: number;
+  noSeed: boolean;
+  perThousand: number;
 }

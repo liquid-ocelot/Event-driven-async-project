@@ -5,7 +5,6 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface UserBody {
-  username: string;
-  password: string;
+export interface CreateGameBody {
+  name: string;
 }

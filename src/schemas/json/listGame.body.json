@@ -1,0 +1,54 @@
+{
+    "title": "listGameBody",
+    "type": "array",
+    "items": {
+        "$ref": "#/$defs/game"
+    },
+    
+    "$defs": {
+        "user": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "id",
+                "username"
+            ],
+            "properties": {
+                "id": {
+                    "type": "number"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "game": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "id",
+                "name",
+                "players",
+                "creator"
+            ],
+            "properties": {
+                "id": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "players": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/user"
+                    }
+                    
+                },
+                "creator": {
+                    "$ref": "#/$defs/user"
+                }
+            }
+        }
+    }
+}
